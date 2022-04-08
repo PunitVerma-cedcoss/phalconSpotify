@@ -1,0 +1,122 @@
+<?php
+$this->assets->outputCss();
+?>
+<div class="h-screen w-screen cbg flex flex-col grid grid-cols-12 justify-center items-center">
+    <div class="sidebar col-span-2 bg-neutral-800 text-gray-300 h-full">
+        <div class="logo flex justify-between items-center p-3">
+            <p class="text-xl font-black text-green-500 leading-relaxed">Singify</p>
+            <i class="fa fa-bolt text-2xl"></i>
+        </div>
+        <a href="/index/create">
+            <div class="flex border-b justify-between border-gray-500 p-3 items-center hover:bg-neutral-900 cursor-pointer">
+                <p>New Playlist</p>
+                <i class="fa fa-plus-circle"></i>
+            </div>
+        </a>
+        <?php
+        if (isset($userPlaylists)) {
+            foreach ($userPlaylists["items"] as $pl) {
+        ?>
+                <div data="<?php echo $pl["id"] ?>" class="flex pl justify-between border-b border-gray-500 p-3 items-center hover:bg-neutral-900 cursor-pointer">
+                    <div class="gallery h-12 w-12 m-2">
+                        <img src="<?php echo isset($pl["images"][0]['url']) ? $pl["images"][0]['url'] : "https://source.unsplash.com/100x100/?na" ?>" class="shadow-lg rounded-lg" alt="n/a">
+                    </div>
+                    <div>
+                        <p class="text-sm"><?php echo $pl["name"] ?></p>
+                        <p class="text-xs text-gray-400"><?php echo $pl["description"] ?></p>
+                    </div>
+                    <a href="<?php echo $pl["external_urls"]["spotify"] ?>">
+                        <i class="fa fa-play"></i>
+                    </a>
+
+                </div>
+        <?php
+            }
+        }
+        ?>
+        <div class="flex justify-between border-b border-gray-500 p-3 items-center hover:bg-neutral-900 cursor-pointer">
+            <p>Classic Playlist</p>
+            <i class="fa fa-play"></i>
+        </div>
+        <div class="flex justify-between border-b border-gray-500 p-3 items-center hover:bg-neutral-900 cursor-pointer">
+            <p>Hit Songs 2022</p>
+            <i class="fa fa-play"></i>
+        </div>
+    </div>
+    <div class="main col-span-10 h-full">
+        <form action="/index/" method="post">
+            <div class="search flex p-3">
+                <input type="text" name="query" class="rounded-full grow border border-gray-400 bg-transparent" placeholder="search song,artist,album" required>
+                <button type="submit" name="search" class="text-white bg-green-600 px-3 py-2 rounded-full mx-3">search</button>
+            </div>
+            <div class="filters p-3 flex justify-center">
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="album" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>album</p>
+                </div>
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="artist" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>artist</p>
+                </div>
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="playlist" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>playlist</p>
+                </div>
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="track" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>track</p>
+                </div>
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="show" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>show</p>
+                </div>
+                <div class="option flex items-center mr-3">
+                    <input type="checkbox" name="episode" id="" class="mr-2 appearence-none checked:bg-green-600 hover:bg-green-600">
+                    <p>episode</p>
+                </div>
+            </div>
+        </form>
+        <?php
+        if (isset($searchData)) {
+            foreach (array_keys($searchData) as $filter) {
+        ?>
+                <div class="p-3" id="<?php echo $filter ?>">
+                    <p><?php echo $filter ?></p>
+                    <?php
+                    foreach ($searchData[$filter]["items"] as $album) {
+                    ?>
+                        <div class="tile flex items-center p-3 m-2 rounded-lg bg-neutral-200">
+                            <img src="<?php echo $album["images"][1]["url"] ?>" class="rounded-lg shadow-xl" alt="N/A" style="width: 150px;height:150px">
+                            <div class="details capitalize p-2 grow">
+                                <p> Name : <?php echo $album["name"] ?></p>
+                                <p> Type : <?php echo $album["type"] ?></p>
+                                <a href="<?php echo $album["external_urls"]["spotify"] ?>">
+                                    <button class="my-2 px-3 py-1 bg-green-600 text-white rounded-full">open in spotify</button>
+                                </a>
+                            </div>
+                            <div class="buttons">
+                                <button data="<?php echo $album["uri"] ?>" class="bg-green-600 text-white p-2 rounded-l addtopl">Add to Playlist</button>
+                                <button class="bg-green-600 text-white p-2 rounded-r"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            <?php
+            }
+            ?>
+        <?php
+        } else {
+        ?>
+            <section class="p-32 text-4xl font-black text-gray-700 flex justify-center items-center">
+                <p>search some thing</p>
+            </section>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+<?php
+$this->assets->outputJs();
+?>

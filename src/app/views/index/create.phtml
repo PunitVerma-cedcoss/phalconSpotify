@@ -1,0 +1,20 @@
+<div class="w-screen h-screen flex justify-center items-center">
+    <div class="bg-white flex flex-col rounded-xl capitalize shadow-xl max-w-lg p-3  text-gray-700">
+        <form action="/index/create" method="post">
+            <p class="text-2xl font-black">Create a New PlayList</p>
+            <label for="name" class="mb-2">
+                <p class="p-2">Name:</p>
+                <input type="text" name="name" class="rounded-full" placeholder="enter name" name="" id="" required>
+            </label>
+            <label for="Description" class="mb-2">
+                <p class="p-2">Description:</p>
+                <input type="text" name="desc" class="rounded-full" placeholder="enter Description" name="" id="" required>
+            </label>
+            <label for="public" class="p-3 flex items-center">
+                <input type="checkbox" class="appearence-none checked:bg-green-700" name="public" checked>
+                <p class="ml-3">public</p>
+            </label>
+            <input type="submit" value="create" class="w-full hover:bg-green-800 cursor-pointer bg-green-700 p-2 shadow-xl rounded-full text-white text-xl" name="submit" id="">
+        </form>
+    </div>
+</div>
