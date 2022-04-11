@@ -1,7 +1,7 @@
 <div class="w-screen h-screen flex justify-center items-center">
     <div class="bg-white flex flex-col rounded-xl capitalize shadow-xl max-w-lg p-3  text-gray-700">
         <form action="/index/create" method="post">
-            <p class="text-2xl font-black">Create a New PlayList</p>
+            <p class="text-2xl p-3">Create a New PlayList</p>
             <label for="name" class="mb-2">
                 <p class="p-2">Name:</p>
                 <input type="text" name="name" class="rounded-full" placeholder="enter name" name="" id="" required>
@@ -14,7 +14,9 @@
                 <input type="checkbox" class="appearence-none checked:bg-green-700" name="public" checked>
                 <p class="ml-3">public</p>
             </label>
-            <input type="submit" value="create" class="w-full hover:bg-green-800 cursor-pointer bg-green-700 p-2 shadow-xl rounded-full text-white text-xl" name="submit" id="">
+            <button class="bg-gradient-to-r w-full from-green-700 to-cyan-800 mt-3 focus:ring-2 focus:ring-offset-2 focus:ring-green-700 text-white px-3 py-2 rounded-full shadow-lg">
+                Create
+            </button>
         </form>
     </div>
 </div>

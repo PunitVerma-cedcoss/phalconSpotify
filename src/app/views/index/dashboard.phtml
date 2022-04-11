@@ -118,7 +118,7 @@
                     foreach ($searchData[$filter]["items"] as $album) {
                     ?>
                         <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                            <img src="<?php echo $album["images"][1]["url"] ?>" style="width: 250px;height:200px;" class="rounded-lg shadow" alt="">
+                            <img src="<?php echo isset($album["images"][1]["url"]) ? $album["images"][1]["url"] : $album["album"]["images"][0]["url"] ?>" style="width: 250px;height:200px;" class="rounded-lg shadow" alt="">
                             <p class="text-xl mt-2"><?php echo strlen($album["name"]) < 19 ? $album["name"] : substr($album["name"], 0, 18) . "." ?></p>
                             <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
                                 rerum.</p>
@@ -135,7 +135,7 @@
         <?php
         } else {
         ?>
-            <div class="sections hidden grow bg-white m-3 rounded-lg p-3 overflow-auto grid grid-cols-12 gap-4">
+            <div class="sections grow bg-white m-3 rounded-lg p-3 overflow-auto grid grid-cols-12 gap-4">
                 <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
                     <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
                     <p class="text-xl mt-2">Lorem, ipsum dolor.</p>

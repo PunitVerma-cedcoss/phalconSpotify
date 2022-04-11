@@ -217,4 +217,76 @@ class ApiComponent extends Injectable
         $response = json_decode($response->getBody()->getContents(), true);
         return $response;
     }
+    public function getPlayListsById($plid)
+    {
+        $url = "https://api.spotify.com/v1/playlists/" . $plid;
+        $client = new Client();
+
+        $response = $client->request(
+            'GET',
+            $url,
+            [
+                'headers'  => [
+                    'Authorization' => "Bearer " . $this->session->get("access_token"),
+                    'Content-Type' => 'application/x-www-form-urlencoded'
+                ],
+                'http_errors' => false
+            ]
+        );
+        // if ok then proceed
+        if ($response->getStatusCode() == "200") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return $response;
+        } else {
+            $response = json_decode($response->getBody()->getContents(), true);
+            // if token has expired
+            if (strtolower($response["error"]["message"]) == "the access token expired") {
+                // event fired 😻
+                $this->EventsManager->fire('application:refreshToken', $this);
+                $this->getPlayListsById($plid);
+            } else {
+                //some other errror if occured
+                die($response);
+            }
+        }
+    }
+    public function removeItemFromPlayListsByPLId($plid, $iid)
+    {
+        $url = "https://api.spotify.com/v1/playlists/" . $plid . "/tracks";
+        $client = new Client();
+
+        $response = $client->request(
+            'DELETE',
+            $url,
+            [
+                'body' =>
+                json_encode([
+
+                    'uris' => [$iid],
+                    "position" => 0
+                ]),
+                'headers'  => [
+                    'Authorization' => "Bearer " . $this->session->get("access_token"),
+                    'Content-Type' => 'application/x-www-form-urlencoded'
+                ],
+                'http_errors' => false
+            ]
+        );
+        // if ok then proceed
+        if ($response->getStatusCode() == "200") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return $response;
+        } else {
+            $response = json_decode($response->getBody()->getContents(), true);
+            // if token has expired
+            if (strtolower($response["error"]["message"]) == "the access token expired") {
+                // event fired 😻
+                $this->EventsManager->fire('application:refreshToken', $this);
+                $this->removeItemFromPlayListsByPLId($plid, $iid);
+            } else {
+                //some other errror if occured
+                die($response);
+            }
+        }
+    }
 }
