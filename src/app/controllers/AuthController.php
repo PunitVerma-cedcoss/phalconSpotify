@@ -7,6 +7,10 @@ class AuthController extends Controller
 {
     public function indexAction()
     {
+        // if user is not logged in
+        if (!$this->session->has("user_email")) {
+            header("location:/auth/login");
+        }
         // if already connected then go to index
         if ($this->session->has("access_token")) {
             header("location:/index");
@@ -32,12 +36,85 @@ class AuthController extends Controller
         }
         // else try to get access token
         $api = new App\Components\ApiComponent();
+        // save the token in db
         $api->getAccessToken($getData["code"]);
+        $users = new Users();
+        $users = $users::findFirst(
+            [
+                'conditions' => 'email = :email:',
+                'bind' => [
+                    'email' => $this->session->get("user_email")
+                ]
+            ]
+        );
+        $users->assign(
+            [
+                "token" => $this->session->get("access_token"),
+            ]
+        )->save();
         header("location:/index");
+    }
+    public function RegisterAction()
+    {
+        if ($this->session->has("user_email")) {
+            header("location:/auth");
+        }
+        // if got post
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+            echo "<pre>";
+            print_r($postData);
+            $users = new Users();
+            $users->assign(
+                [
+                    "email" => $postData["email"],
+                    "password" => $postData["password"],
+                ]
+            );
+            if ($users->save()) {
+                header("location:/auth");
+            } else {
+                die("some error occured");
+            }
+        }
     }
     public function logoutAction()
     {
         $this->session->destroy();
         header("location:/auth");
+    }
+    public function LoginAction()
+    {
+        if ($this->session->has("user_email")) {
+            header("location:/auth");
+        }
+        // if got post
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+            echo "<pre>";
+            print_r($postData);
+            $users = new Users();
+            $data = $users::findFirst(
+                [
+                    "conditions" => "email = :email: AND password = :password:",
+                    "bind" => [
+                        "email" => $postData["email"],
+                        "password" => $postData["password"],
+                    ]
+                ]
+            );
+            echo "<pre>";
+            if ($data) {
+                if ($data->count() == 1) {
+                    // set the session
+                    $this->session->set("user_email", $postData["email"]);
+                    header("location:/auth");
+                } else {
+                    die("some error occured");
+                }
+            } else {
+                die("invalid creds");
+            }
+        }
     }
 }

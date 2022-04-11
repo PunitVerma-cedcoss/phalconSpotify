@@ -1,0 +1,17 @@
+<div class="login flex flex-col p-3 rounded-lg shadow bg-white  items-center justify-center">
+    <ion-icon name="headset" class="text-6xl drop-shadow-lg mb-3"></ion-icon>
+    <form action="/auth/register" method="post" class="flex flex-col">
+        <p class="text-xl font-medium">Register here</p>
+        <label for="email">
+            <p class="">Email</p>
+            <input type="text" name="email" class="my-1 rounded-full border-gray-300" placeholder="enter email...." required>
+        </label>
+        <label for="password">
+            <p class="">Password</p>
+            <input type="text" name="password" class="my-1 rounded-full border-gray-300" placeholder="enter password...." required>
+        </label>
+        <button type="submit" class="bg-gradient-to-r from-green-700 to-cyan-800 mt-3 focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-white px-3 py-1 rounded-full shadow-lg">
+            Register
+        </button>
+    </form>
+</div>

@@ -76,6 +76,22 @@ class ApiComponent extends Injectable
             $this->session->set("access_token", $response["access_token"]);
             $this->session->set("expires_in", $response["expires_in"]);
             $this->session->set("scope", $response["scope"]);
+
+
+            // save to db
+            $users = $users::findFirst(
+                [
+                    'conditions' => 'email = :email:',
+                    'bind' => [
+                        'email' => $this->session->get("user_email")
+                    ]
+                ]
+            );
+            $users->assign(
+                [
+                    "token" => $this->session->get("access_token"),
+                ]
+            )->save();
         }
     }
     public function getCurrentUserDetails()

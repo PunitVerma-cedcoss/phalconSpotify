@@ -68,6 +68,9 @@ class IndexController extends Controller
     }
     public function indexAction()
     {
+        if (!$this->session->has("user_email") || !$this->session->has("access_token")) {
+            header("location:/auth");
+        }
         $this->assets->addJs("js/handleAdd.js");
         $this->assets->addJs("js/util.js");
         $this->assets->addCss("css/styles.css");
