@@ -164,7 +164,7 @@
         ?>
     </div>
 </div>
-<!-- if device is currenlty playing  -->
+<!-- if device is currently playing  -->
 <?php
 if (isset($device)) {
 ?>
@@ -172,7 +172,7 @@ if (isset($device)) {
         <div class="w-full flex justify-end items-center cursor-pointer">
             <ion-icon name="close-circle-outline" class="close-player text-2xl text-white hover:ring-1 hover:rounded-full hover:ring-offset-1 ring-green-400"></ion-icon>
         </div>
-        <img src="https://source.unsplash.com/70x70/?cool" class="rounded-lg shadow-lg" alt="">
+        <img src="<?php echo $device["item"]["album"]["images"][0]["url"] ?>" style="width: 50px;height:50px;" class="rounded-lg shadow-lg" alt="">
         <div class="details text-xs text-white flex flex-col justify-between w-full p-2">
             <p><?php echo substr($device["item"]["album"]["name"], 0, 20) . ".." ?></p>
             <p><?php echo date("i:s", $device["progress_ms"]) ?></p>
@@ -184,7 +184,7 @@ if (isset($device)) {
         </div>
         <div class="buttons flex items-center p-2 text-white">
             <ion-icon name="play-skip-back"></ion-icon>
-            <ion-icon name="play" class="text-2xl"></ion-icon>
+            <ion-icon name="play" class="text-2xl play-player"></ion-icon>
             <ion-icon name="play-skip-forward"></ion-icon>
         </div>
     </div>

@@ -160,3 +160,8 @@ $(".open-player").click(function (e) {
     $(".player").fadeIn()
     $(".open-player").fadeOut()
 });
+
+$('.play-player').click(function (e) {
+    e.preventDefault();
+    addNotification("please Upgrade to premium")
+});
