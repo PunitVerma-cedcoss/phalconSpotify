@@ -34,9 +34,11 @@
             }
         }
         ?>
-        <div class="grow"></div>
-        <div class="icons p-3 flex items-center text-center">
-            <p>Lorem ipsum, dolor sit amet consectetur.</p>
+        <div class="grow">
+        </div>
+        <div class="icons p-3 flex items-center justify-between text-center">
+            <p>Log out <a href="/auth/logout"><span class="text-green-600">here</span></a></p>
+            <ion-icon name="play" class="hidden cursor-pointer open-player text-green-500"></ion-icon>
         </div>
     </div>
     <div class="main h-screen flex flex-col col-span-9 lg:col-span-9 xl:col-span-9 md:col-span-8 sm:col-span-12">
@@ -67,7 +69,7 @@
                         <p class="text-md ml-2">Playlist</p>
                     </label>
                     <label for="album" class="flex items-center">
-                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="track" id="">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="track" id="" checked>
                         <p class="text-md ml-2">Track</p>
                     </label>
                     <label for="show" class="flex items-center">
@@ -99,15 +101,18 @@
             <div class="tab p-3 flex items-center text-green-700">
                 <ion-icon name="chevron-forward"></ion-icon>
             </div>
-            <div class="tab text-gray-800 p-3 border-b-2 cursor-pointer border-green-500">
-                <p>Album</p>
-            </div>
-            <div class="tab text-gray-700 hover:text-gray-800 p-3 hover:border-b-2 cursor-pointer border-green-500">
-                <p>Artists</p>
-            </div>
-            <div class="tab text-gray-700 hover:text-gray-800 p-3 hover:border-b-2 cursor-pointer border-green-500">
-                <p>Tracks</p>
-            </div>
+            <?php
+            $ctr = 1;
+            if (isset($tabs))
+                foreach ($tabs as $tab) {
+            ?>
+                <div class="tab capitalize text-gray-800 p-3 <?php echo $ctr == 1 ? "border-b-2" : "" ?> cursor-pointer border-green-500">
+                    <p><?php echo $tab; ?></p>
+                </div>
+            <?php
+                    $ctr++;
+                }
+            ?>
         </div>
         <?php
         if (isset($searchData)) {
@@ -138,76 +143,55 @@
         } else {
         ?>
             <div class="sections grow bg-white m-3 rounded-lg p-3 overflow-auto grid grid-cols-12 gap-4">
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
-                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
-                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
-                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
-                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
-                        rerum.</p>
-                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
-                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
-                </div>
+
+                <?php
+                foreach ($recomandations["tracks"] as $album) {
+                ?>
+                    <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                        <img src="<?php echo isset($album["album"]["images"][1]["url"]) ? $album["album"]["images"][1]["url"] : $album["album"]["images"][0]["url"] ?>" style="width: 250px;height:200px;" class="rounded-lg shadow" alt="">
+                        <p class="text-xl mt-2"><?php echo strlen($album["album"]["name"]) < 19 ? $album["album"]["name"] : substr($album["name"], 0, 18) . "." ?></p>
+                        <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                            rerum.</p>
+                        <button data="<?php echo $album["album"]["uri"] ?>" class="addtopl block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                            to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                    </div>
+                <?php
+                }
+                ?>
             </div>
         <?php
         }
         ?>
     </div>
 </div>
+<!-- if device is currenlty playing  -->
+<?php
+if (isset($device)) {
+?>
+    <div class="fixed bottom-0 player rounded-lg shadow-xl m-5 p-3 bg-green-500 flex flex-col justify-center items-center">
+        <div class="w-full flex justify-end items-center cursor-pointer">
+            <ion-icon name="close-circle-outline" class="close-player text-2xl text-white hover:ring-1 hover:rounded-full hover:ring-offset-1 ring-green-400"></ion-icon>
+        </div>
+        <img src="https://source.unsplash.com/70x70/?cool" class="rounded-lg shadow-lg" alt="">
+        <div class="details text-xs text-white flex flex-col justify-between w-full p-2">
+            <p><?php echo substr($device["item"]["album"]["name"], 0, 20) . ".." ?></p>
+            <p><?php echo date("i:s", $device["progress_ms"]) ?></p>
+        </div>
+        <div>
+            <div class="w-32 bg-gray-200 rounded-lg h-2">
+                <div class="bg-red-500 h-2 rounded-lg" style="width: 25%"></div>
+            </div>
+        </div>
+        <div class="buttons flex items-center p-2 text-white">
+            <ion-icon name="play-skip-back"></ion-icon>
+            <ion-icon name="play" class="text-2xl"></ion-icon>
+            <ion-icon name="play-skip-forward"></ion-icon>
+        </div>
+    </div>
+<?php
+}
+?>
+<!-- notifications -->
 <div class="notifications fixed bottom-0 right-0 m-5">
     <div class="noti m-2 flex">
         <div class="n-1 bg-white flex items-center w-60 bg-gradient-to-r from-green-900 to-cyan-900 rounded-l-lg text-gray-200">
@@ -219,6 +203,7 @@
         </div>
     </div>
 </div>
+<!-- modal -->
 <div style="display: none;" class="modaal backdrop bg-gray-400/50 fixed top-0 bottom-0 h-screen w-screen flex items-center justify-center">
     <div class="modaal-child bg-white rounded-lg shadow-lg lg:w-1/2 md:w-3/4">
         <div class="p-3 flex justify-center items-center">

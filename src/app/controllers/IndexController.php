@@ -71,11 +71,14 @@ class IndexController extends Controller
         $this->assets->addJs("js/handleAdd.js");
         $this->assets->addJs("js/util.js");
         $this->assets->addCss("css/styles.css");
-
         $api = new App\Components\ApiComponent();
+        $device = $api->controllPlayer();
+        if ($device) {
+            $this->view->device = $device;
+        }
         $this->view->userPlaylists = $api->getCurrentUserPlayLists();
         $this->view->profile = $api->getCurrentUserDetails();
-
+        $this->view->recomandations = $api->getReccomandations();
         // if got post
         if ($this->request->isPost()) {
             // echo "<pre>";
@@ -90,10 +93,7 @@ class IndexController extends Controller
             $searchData = $api->search($filters, $this->request->getPost()["query"]);
             $this->view->searchData = $searchData;
             $this->view->search = $this->request->getPost()["query"];
-
-            // echo "<pre>";
-            // print_r(json_encode($searchData));
-            // die;
+            $this->view->tabs = array_keys($searchData);
         }
     }
 }

@@ -35,4 +35,9 @@ class AuthController extends Controller
         $api->getAccessToken($getData["code"]);
         header("location:/index");
     }
+    public function logoutAction()
+    {
+        $this->session->destroy();
+        header("location:/auth");
+    }
 }

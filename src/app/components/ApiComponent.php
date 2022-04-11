@@ -289,4 +289,88 @@ class ApiComponent extends Injectable
             }
         }
     }
+    public function getReccomandations()
+    {
+        // $url = "https://api.spotify.com/v1/me";
+        $url = "https://api.spotify.com/v1/recommendations?limit=10&market=ES&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry";
+        $client = new Client();
+
+        $response = $client->request(
+            'GET',
+            $url,
+            [
+                'headers'  => [
+                    'Authorization' => "Bearer " . $this->session->get("access_token"),
+                    'Content-Type' => 'application/json'
+                ],
+                'http_errors' => false,
+            ]
+        );
+        // if ok then proceed
+        if ($response->getStatusCode() == "200") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return $response;
+        } else {
+            $response = json_decode($response->getBody()->getContents(), true);
+            // if token has expired
+            if (isset($response["error"]["message"])) {
+                if (strtolower($response["error"]["message"]) == "the access token expired") {
+                    // event fired 😻
+                    $this->EventsManager->fire('application:refreshToken', $this);
+                    $this->getReccomandations();
+                } else {
+                    //some other errror if occured
+                    echo "<pre>";
+                    print_r($response);
+                    die();
+                }
+            } else {
+                die($response->getStatusCode());
+            }
+        }
+    }
+    public function controllPlayer()
+    {
+        $url = "https://api.spotify.com/v1/me/player/currently-playing";
+        $client = new Client();
+
+        $response = $client->request(
+            'GET',
+            $url,
+            [
+                'headers'  => [
+                    'Authorization' => "Bearer " . $this->session->get("access_token"),
+                    'Content-Type' => 'application/json'
+                ],
+                'http_errors' => false,
+            ]
+        );
+        // if ok then proceed
+        if ($response->getStatusCode() == "200") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return $response;
+        }
+        // if device is not active
+        elseif ($response->getStatusCode() == "204") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return false;
+        } else {
+            $response = json_decode($response->getBody()->getContents(), true);
+            // if token has expired
+            if (isset($response["error"]["message"])) {
+                if (strtolower($response["error"]["message"]) == "the access token expired") {
+                    // event fired 😻
+                    $this->EventsManager->fire('application:refreshToken', $this);
+                    $this->getReccomandations();
+                } else {
+                    //some other errror if occured
+                    echo "<pre>";
+                    print_r($response);
+                    die();
+                }
+            } else {
+                die($response->getStatusCode());
+            }
+        }
+    }
 }

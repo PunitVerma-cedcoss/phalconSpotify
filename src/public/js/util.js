@@ -145,3 +145,18 @@ function deleteFromPlaylist(plid, id) {
 $("body").on("click", ".close-modal", function () {
     $(".backdrop").fadeOut()
 });
+
+
+// handle player close
+$(".close-player").click(function (e) {
+    e.preventDefault();
+    $(".player").fadeOut()
+    $(".open-player").fadeIn()
+});
+
+// handle player open
+$(".open-player").click(function (e) {
+    e.preventDefault();
+    $(".player").fadeIn()
+    $(".open-player").fadeOut()
+});
