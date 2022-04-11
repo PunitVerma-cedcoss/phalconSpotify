@@ -86,7 +86,7 @@ $this->assets->outputCss();
                     foreach ($searchData[$filter]["items"] as $album) {
                     ?>
                         <div class="tile flex items-center p-3 m-2 rounded-lg bg-neutral-200">
-                            <img src="<?php echo $album["images"][1]["url"] ?>" class="rounded-lg shadow-xl" alt="N/A" style="width: 150px;height:150px">
+                            <img src="<?php echo isset($album["images"][1]["url"]) ? $album["images"][1]["url"] :  $album["images"][0]["url"] ?>" class="rounded-lg shadow-xl" alt="N/A" style="width: 150px;height:150px">
                             <div class="details capitalize p-2 grow">
                                 <p> Name : <?php echo $album["name"] ?></p>
                                 <p> Type : <?php echo $album["type"] ?></p>

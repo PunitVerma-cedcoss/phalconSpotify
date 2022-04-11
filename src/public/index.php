@@ -67,6 +67,7 @@ $container->set(
 
 //setting listeners
 $eventsManager = new EventsManager();
+$eventsManager->attach('application:refreshToken', new App\Listeners\Tokenlistener());
 $eventsManager->attach('application:beforeHandleRequest', new App\Listeners\Authlistener());
 $container->set(
     'EventsManager',

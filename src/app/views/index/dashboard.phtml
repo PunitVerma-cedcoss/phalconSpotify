@@ -1,0 +1,223 @@
+<div class="grid grid-cols-12 h-screen">
+    <div class="sidebar flex flex-col divide-y divide-green-100 h-screen lg:col-span-3 xl:col-span-3 md:col-span-4 sm:col-span-12 bg-white shadow-lg">
+        <div class="logo text-4xl flex items-center p-3">
+            <ion-icon name="diamond" class="text-green-600 drop-shadow-lg"></ion-icon>
+            <p class="text-2xl ml-3 font-medium">Qwerty</p>
+        </div>
+        <div class="profile p-3 flex items-center">
+            <img src="https://source.unsplash.com/70x70/?avatar" class="rounded-lg shadow-lg" alt="">
+            <div class="ml-3 grow capitalize">
+                <p class="text-lg capitalize">Hello <?php echo $profile["display_name"] ?></p>
+                <p class="text-sm text-gray-500">you have <?php echo count($userPlaylists["items"]) ?> playlists.</p>
+            </div>
+            <a href="/index/create">
+                <button class="h-8 w-8 bg-green-500 text-white flex items-center justify-center rounded-lg shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-green-500">
+                    <ion-icon name="add"></ion-icon>
+                </button>
+            </a>
+        </div>
+        <?php
+        if (isset($userPlaylists)) {
+            foreach ($userPlaylists["items"] as $pl) {
+        ?>
+                <div data="<?php echo $pl["id"] ?>" class="tile pl hover:bg-gray-200 cursor-pointer flex p-3 capitalize items-center">
+                    <img src="<?php echo isset($pl["images"][0]['url']) ? $pl["images"][0]['url'] : "https://source.unsplash.com/50x50/?cool" ?>" width="50" height="50" class="rounded-lg shadow-lg" alt="">
+                    <div class="grow ml-3">
+                        <p class="font-medium"><?php echo $pl["name"] ?></p>
+                        <p class="text-sm text-gray-700"><?php echo $pl["description"] ?></p>
+                    </div>
+                    <ion-icon name="chevron-forward" data="<?php echo $pl["external_urls"]["spotify"] ?>" class=""></ion-icon>
+                </div>
+        <?php
+            }
+        }
+        ?>
+        <div class="grow"></div>
+        <div class="icons p-3 flex items-center text-center">
+            <p>Lorem ipsum, dolor sit amet consectetur.</p>
+        </div>
+    </div>
+    <div class="main h-screen flex flex-col col-span-9 lg:col-span-9 xl:col-span-9 md:col-span-8 sm:col-span-12">
+        <form action="#" method="post">
+            <div class="search flex p-3">
+                <input type="text" name="query" class="p-3 shadow grow border-0 rounded-l-lg focus:ring-0" placeholder="search here.." required>
+                <button type="submit" class="shadow text-white bg-green-600 open-filter flex items-center focus:ring-2 focus:ring-offset-2 focus:ring-green-500 px-2">
+                    <ion-icon name="filter"></ion-icon>
+                </button>
+                <button type="submit" class="shadow text-white bg-green-500 rounded-r-lg focus:ring-2 focus:ring-offset-2 focus:ring-green-500 px-2">Search</button>
+            </div>
+            <div class="filter hidden bg-white shadow rounded-lg p-3 flex flex-col m-3">
+                <div class="flex items-center">
+                    <ion-icon name="filter" class="text-green-500 text-2xl"></ion-icon>
+                    <p class="ml-1">Filters</p>
+                </div>
+                <div class="filters p-3 flex items-center justify-around text-gray-700 text-sm">
+                    <label for="album" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="album" id="">
+                        <p class="text-md ml-2">Album</p>
+                    </label>
+                    <label for="album" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="artist" id="">
+                        <p class="text-md ml-2">Artist</p>
+                    </label>
+                    <label for="album" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="playlist" id="">
+                        <p class="text-md ml-2">Playlist</p>
+                    </label>
+                    <label for="album" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="track" id="">
+                        <p class="text-md ml-2">Track</p>
+                    </label>
+                    <label for="show" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="show" id="">
+                        <p class="text-md ml-2">Show</p>
+                    </label>
+                    <label for="episode" class="flex items-center">
+                        <input type="checkbox" class="border-green-500 border-2 appearence-none rounded-sm checked:bg-green-500" name="episode" id="">
+                        <p class="text-md ml-2">Episode</p>
+                    </label>
+                </div>
+            </div>
+        </form>
+        <div class="chips flex px-3 py-1">
+            <?php
+            if (isset($search)) {
+            ?>
+                <div class="chip flex shadow-lg items-center bg-white rounded-full px-1 py-1/2">
+                    <p class="text-sm text-gray-700 mr-1 capitalize pl-1"><?php echo $search; ?></p>
+                    <a href="/index/dashboard" class="flex items-center">
+                        <ion-icon name="close-circle" class="drop-shadow-lg cursor-pointer hover:text-green-900 text-2xl text-green-500"></ion-icon>
+                    </a>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <div class="tabs flex bg-white mx-3 mt-2 rounded-lg">
+            <div class="tab p-3 flex items-center text-green-700">
+                <ion-icon name="chevron-forward"></ion-icon>
+            </div>
+            <div class="tab text-gray-800 p-3 border-b-2 cursor-pointer border-green-500">
+                <p>Album</p>
+            </div>
+            <div class="tab text-gray-700 hover:text-gray-800 p-3 hover:border-b-2 cursor-pointer border-green-500">
+                <p>Artists</p>
+            </div>
+            <div class="tab text-gray-700 hover:text-gray-800 p-3 hover:border-b-2 cursor-pointer border-green-500">
+                <p>Tracks</p>
+            </div>
+        </div>
+        <?php
+        if (isset($searchData)) {
+        ?>
+            <div class="sections grow bg-white m-3 rounded-lg p-3 overflow-auto grid grid-cols-12 gap-4">
+                <?php
+                foreach (array_keys($searchData) as $filter) {
+                ?>
+                    <?php
+                    foreach ($searchData[$filter]["items"] as $album) {
+                    ?>
+                        <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                            <img src="<?php echo $album["images"][1]["url"] ?>" style="width: 250px;height:200px;" class="rounded-lg shadow" alt="">
+                            <p class="text-xl mt-2"><?php echo strlen($album["name"]) < 19 ? $album["name"] : substr($album["name"], 0, 18) . "." ?></p>
+                            <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                                rerum.</p>
+                            <button data="<?php echo $album["uri"] ?>" class="addtopl block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                                to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                <?php
+                }
+                ?>
+            </div>
+        <?php
+        } else {
+        ?>
+            <div class="sections hidden grow bg-white m-3 rounded-lg p-3 overflow-auto grid grid-cols-12 gap-4">
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+                <div class="card lg:col-span-3 md:col-span-6 sm:col-span-4 border rounded-lg p-3 shadow-lg">
+                    <img src="https://source.unsplash.com/250x200/?cool" class="rounded-lg shadow" alt="">
+                    <p class="text-xl mt-2">Lorem, ipsum dolor.</p>
+                    <p class="text-xs text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis,
+                        rerum.</p>
+                    <button class="block mx-auto bg-green-500 text-white w-full p-2 rounded-lg m-3 flex items-center justify-center hover:ring-2 hover:ring-offset-2 hover:ring-green-500">Add
+                        to PlayList <ion-icon class="ml-1 text-xl" name="add-circle"></ion-icon></button>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+<div class="notifications fixed bottom-0 right-0 m-5">
+    <div class="noti m-2 flex">
+        <div class="n-1 bg-white flex items-center w-60 bg-gradient-to-r from-green-900 to-cyan-900 rounded-l-lg text-gray-200">
+            <ion-icon name="alert-circle" class="text-6xl p-1"></ion-icon>
+            <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+        <div class="n-2 close-noti  bg-gradient-to-l from-green-900 border-l to-cyan-900 bg-rose-500 text-gray-400 hover:text-gray-300 cursor-pointer h-100 flex items-center justify-center p-3 rounded-r-lg">
+            <ion-icon name="close" class=" text-2xl text-gray-200"></ion-icon>
+        </div>
+    </div>
+</div>
+<?php
+$this->assets->outputJs();
+$this->assets->outputCss();
+?>

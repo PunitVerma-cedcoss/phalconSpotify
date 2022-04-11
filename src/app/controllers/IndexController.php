@@ -8,6 +8,7 @@ class IndexController extends Controller
     public function indexAction()
     {
         $this->assets->addJs("js/handleAdd.js");
+        $this->assets->addJs("js/util.js");
         $api = new App\Components\ApiComponent();
         $this->assets->addCss("css/styles.css");
         $this->view->userPlaylists = $api->getCurrentUserPlayLists();
@@ -61,6 +62,36 @@ class IndexController extends Controller
                 echo 200;
             }
             die();
+        }
+    }
+    public function dashboardAction()
+    {
+        $this->assets->addJs("js/handleAdd.js");
+        $this->assets->addJs("js/util.js");
+        $this->assets->addCss("css/styles.css");
+
+        $api = new App\Components\ApiComponent();
+        $this->view->userPlaylists = $api->getCurrentUserPlayLists();
+        $this->view->profile = $api->getCurrentUserDetails();
+
+        // if got post
+        if ($this->request->isPost()) {
+            // echo "<pre>";
+            // print_r($this->request->getPost());
+
+            $filters = [];
+            foreach (array_keys($this->request->getPost()) as $f) {
+                if ($f != "search" && $f != "query") {
+                    array_push($filters, $f);
+                }
+            }
+            $searchData = $api->search($filters, $this->request->getPost()["query"]);
+            $this->view->searchData = $searchData;
+            $this->view->search = $this->request->getPost()["query"];
+
+            // echo "<pre>";
+            // print_r($searchData);
+            // die;
         }
     }
 }

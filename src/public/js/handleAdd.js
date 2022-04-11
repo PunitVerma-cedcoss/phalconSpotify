@@ -10,20 +10,20 @@ $(".addtopl").click(function (e) {
             success: function (response) {
                 console.log(response)
                 if (response == '200') {
-                    alert("added")
+                    addNotification("song has been added")
                 }
             }
         });
     }
     else {
-        alert("abe playlist to select kr")
+        addNotification("abe playlist to select kr")
     }
 });
 
 $(".pl").click(function (e) {
     e.preventDefault();
-    $('.pl').removeClass("bg-neutral-900")
-    $(this).addClass("bg-neutral-900")
+    $('.pl').removeClass("bg-green-200")
+    $(this).addClass("bg-green-200")
     currentPl = $(this).attr("data")
 });
 

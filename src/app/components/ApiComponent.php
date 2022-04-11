@@ -97,16 +97,13 @@ class ApiComponent extends Injectable
 
         // set id in session
         $this->session->set("user_id", "31gcafrmfjpqcrr4jvnztgpbsqm4");
-        echo "<pre>";
-        print_r($response);
-        die;
+        return $response;
     }
     public function search($filters, $q)
     {
-        $url = "https://api.spotify.com/v1/search?type=" . implode(",", $filters) . "&include_external=audio&q=" . $q . "&limit=5";
+        $url = "https://api.spotify.com/v1/search?type=" . implode(",", $filters) . "&include_external=audio&q=" . $q . "&limit=20";
         try {
             $client = new Client();
-
             $response = $client->request(
                 'GET',
                 $url,
@@ -114,13 +111,28 @@ class ApiComponent extends Injectable
                     'headers'  => [
                         'Authorization' => "Bearer " . $this->session->get("access_token"),
                         'Content-Type' => 'application/x-www-form-urlencoded'
-                    ]
+                    ],
+                    'http_errors' => false
                 ]
             );
-            $response = json_decode($response->getBody()->getContents(), true);
-            echo "<pre>";
-            return $response;
-        } catch (Guzzle\Http\Exception\BadResponseException $e) {
+            // if ok then proceed
+            if ($response->getStatusCode() == '200') {
+                $response = json_decode($response->getBody()->getContents(), true);
+                return $response;
+            } else {
+                // now error has occured
+                $response = json_decode($response->getBody()->getContents(), true);
+                // if token has expired
+                if (strtolower($response["error"]["message"]) == "the access token expired") {
+                    // event fired 😻
+                    $this->EventsManager->fire('application:refreshToken', $this);
+                    $this->search($filters, $q);
+                } else {
+                    //some other errror if occured
+                    die($response);
+                }
+            }
+        } catch (GuzzleHttp\Exception\RequestException $e) {
             die("your token is expired");
         }
     }
@@ -136,11 +148,26 @@ class ApiComponent extends Injectable
                 'headers'  => [
                     'Authorization' => "Bearer " . $this->session->get("access_token"),
                     'Content-Type' => 'application/x-www-form-urlencoded'
-                ]
+                ],
+                'http_errors' => false
             ]
         );
-        $response = json_decode($response->getBody()->getContents(), true);
-        return $response;
+        // if ok then proceed
+        if ($response->getStatusCode() == "200") {
+            $response = json_decode($response->getBody()->getContents(), true);
+            return $response;
+        } else {
+            $response = json_decode($response->getBody()->getContents(), true);
+            // if token has expired
+            if (strtolower($response["error"]["message"]) == "the access token expired") {
+                // event fired 😻
+                $this->EventsManager->fire('application:refreshToken', $this);
+                $this->getCurrentUserPlayLists();
+            } else {
+                //some other errror if occured
+                die($response);
+            }
+        }
     }
     public function createPlayLists($name, $desc, $ispublic)
     {

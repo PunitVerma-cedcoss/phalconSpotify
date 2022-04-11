@@ -1,27 +1,22 @@
 * {
   transition: 0.3s all ease;
 }
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #888;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(5, 126, 15, 0.747);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(2, 136, 42, 0.685);
-}
 
 .cbg {
   /* background-image: url("../assets/layered-waves-haikei\ \(1\).svg"); */
   background-size: cover;
   background-position: center;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(9, 180, 29, 0.741);
 }
