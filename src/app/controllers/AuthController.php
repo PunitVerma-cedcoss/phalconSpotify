@@ -127,9 +127,6 @@ class AuthController extends Controller
                         $this->session->set("expires_in", $users->exp);
                         $this->session->set("refresh_token", $users->refresh_token);
                         $this->session->set("scope", $users->scope);
-
-                        // print_r($this->session->get("scope"));
-                        // die("do auto connect");
                     }
                     header("location:/auth");
                 } else {
