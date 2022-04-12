@@ -8,4 +8,7 @@ class Users extends Model
     public $email;
     public $password;
     public $token;
+    public $exp;
+    public $refresh_token;
+    public $scope;
 }

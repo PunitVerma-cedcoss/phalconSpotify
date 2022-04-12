@@ -4,6 +4,7 @@ namespace App\Components;
 
 use Phalcon\Di\Injectable;
 use GuzzleHttp\Client;
+use Users;
 
 /**
  * helper class for hitting the api and getting response
@@ -43,6 +44,25 @@ class ApiComponent extends Injectable
             $this->session->set("expires_in", $response["expires_in"]);
             $this->session->set("refresh_token", $response["refresh_token"]);
             $this->session->set("scope", $response["scope"]);
+
+            // save these in db also
+            $users = new Users();
+            $users = $users::findFirst(
+                [
+                    'conditions' => 'email = :email:',
+                    'bind' => [
+                        'email' => $this->session->get("user_email")
+                    ]
+                ]
+            );
+            $users->assign(
+                [
+                    "token" => $this->session->get("access_token"),
+                    "refresh_token" => $this->session->get("refresh_token"),
+                    "scope" => $this->session->get("scope"),
+                    "exp" => $this->session->get("expires_in"),
+                ]
+            )->save();
         }
         // return $response;
     }

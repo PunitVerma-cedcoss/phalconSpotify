@@ -106,15 +106,37 @@ class AuthController extends Controller
             );
             echo "<pre>";
             if ($data) {
-                if ($data->count() == 1) {
+                if ($data->email) {
                     // set the session
                     $this->session->set("user_email", $postData["email"]);
+                    // if token is present then auto connect to spotify
+                    if ($data->refresh_token) {
+                        // fetch data from db
+
+                        $users = new Users();
+                        $users = $users::findFirst(
+                            [
+                                'conditions' => 'email = :email:',
+                                'bind' => [
+                                    'email' => $this->session->get("user_email")
+                                ]
+                            ]
+                        );
+
+                        $this->session->set("access_token", $users->token);
+                        $this->session->set("expires_in", $users->exp);
+                        $this->session->set("refresh_token", $users->refresh_token);
+                        $this->session->set("scope", $users->scope);
+
+                        // print_r($this->session->get("scope"));
+                        // die("do auto connect");
+                    }
                     header("location:/auth");
                 } else {
-                    // die("some error occured");
+                    die("some error occured");
                     // set the session
-                    $this->session->set("user_email", $postData["email"]);
-                    header("location:/auth");
+                    // $this->session->set("user_email", $postData["email"]);
+                    // header("location:/auth");
                 }
             } else {
                 die("invalid creds");
