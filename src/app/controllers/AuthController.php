@@ -39,7 +39,7 @@ class AuthController extends Controller
         // save the token in db
         $api->getAccessToken($getData["code"]);
         $users = new Users();
-        $users = $users::findFirst(
+        $users2 = $users::findFirst(
             [
                 'conditions' => 'email = :email:',
                 'bind' => [
@@ -47,11 +47,12 @@ class AuthController extends Controller
                 ]
             ]
         );
-        $users->assign(
+        $users2->assign(
             [
                 "token" => $this->session->get("access_token"),
             ]
-        )->save();
+        );
+        $users->save();
         header("location:/index");
     }
     public function RegisterAction()
@@ -110,7 +111,10 @@ class AuthController extends Controller
                     $this->session->set("user_email", $postData["email"]);
                     header("location:/auth");
                 } else {
-                    die("some error occured");
+                    // die("some error occured");
+                    // set the session
+                    $this->session->set("user_email", $postData["email"]);
+                    header("location:/auth");
                 }
             } else {
                 die("invalid creds");

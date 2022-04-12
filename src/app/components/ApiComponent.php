@@ -4,8 +4,6 @@ namespace App\Components;
 
 use Phalcon\Di\Injectable;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * helper class for hitting the api and getting response
@@ -13,10 +11,10 @@ use GuzzleHttp\Exception\ClientException;
 class ApiComponent extends Injectable
 {
     /**
-     * returns whatever the response of the passed url
+     * gets the accesstoken, and sets in session
      *
-     * @param [string] $q
-     * @return ARRAY
+     * @param [type] $auth_token
+     * @return void
      */
     public function getAccessToken($auth_token)
     {
@@ -48,9 +46,19 @@ class ApiComponent extends Injectable
         }
         // return $response;
     }
+    /**
+     * returns the current user's all playlists
+     *
+     * @return void
+     */
     public function getUserPlayList()
     {
     }
+    /**
+     * request a new token from refresh token and sets in session
+     *
+     * @return void
+     */
     public function getRefreshedToken()
     {
         $url = "https://accounts.spotify.com/api/token";
@@ -94,6 +102,11 @@ class ApiComponent extends Injectable
             )->save();
         }
     }
+    /**
+     * return current user's profile
+     *
+     * @return void
+     */
     public function getCurrentUserDetails()
     {
         $url = "https://api.spotify.com/v1/me";
@@ -115,6 +128,13 @@ class ApiComponent extends Injectable
         $this->session->set("user_id", "31gcafrmfjpqcrr4jvnztgpbsqm4");
         return $response;
     }
+    /**
+     * return the result of a passed query
+     *
+     * @param [type] $filters
+     * @param [type] $q
+     * @return void
+     */
     public function search($filters, $q)
     {
         $url = "https://api.spotify.com/v1/search?type=" . implode(",", $filters) . "&include_external=audio&q=" . $q . "&limit=20";
@@ -152,6 +172,11 @@ class ApiComponent extends Injectable
             die("your token is expired");
         }
     }
+    /**
+     * get current user's playlists
+     *
+     * @return void
+     */
     public function getCurrentUserPlayLists()
     {
         $url = "https://api.spotify.com/v1/me/playlists";
@@ -185,6 +210,14 @@ class ApiComponent extends Injectable
             }
         }
     }
+    /**
+     * creates a spotify playlist
+     *
+     * @param [type] $name
+     * @param [type] $desc
+     * @param [type] $ispublic
+     * @return void
+     */
     public function createPlayLists($name, $desc, $ispublic)
     {
         $url = "https://api.spotify.com/v1/users/" . $this->session->get("user_id") . "/playlists";
@@ -209,6 +242,13 @@ class ApiComponent extends Injectable
         $response = json_decode($response->getBody()->getContents(), true);
         return $response;
     }
+    /**
+     * add tracks or albums etc, in spotify playlists by it's id
+     *
+     * @param [type] $playListId
+     * @param [type] $itemId
+     * @return void
+     */
     public function addToPlayLists($playListId, $itemId)
     {
         $url = "https://api.spotify.com/v1/playlists/" . $playListId . "/tracks";
@@ -233,6 +273,12 @@ class ApiComponent extends Injectable
         $response = json_decode($response->getBody()->getContents(), true);
         return $response;
     }
+    /**
+     * get individual playlist by id
+     *
+     * @param [type] $plid
+     * @return void
+     */
     public function getPlayListsById($plid)
     {
         $url = "https://api.spotify.com/v1/playlists/" . $plid;
@@ -266,6 +312,13 @@ class ApiComponent extends Injectable
             }
         }
     }
+    /**
+     * deletes a track or anything from the plyalist by id
+     *
+     * @param [type] $plid
+     * @param [type] $iid
+     * @return void
+     */
     public function removeItemFromPlayListsByPLId($plid, $iid)
     {
         $url = "https://api.spotify.com/v1/playlists/" . $plid . "/tracks";
@@ -305,6 +358,11 @@ class ApiComponent extends Injectable
             }
         }
     }
+    /**
+     * returns some reccomandations
+     *
+     * @return void
+     */
     public function getReccomandations()
     {
         // $url = "https://api.spotify.com/v1/me";
@@ -345,6 +403,11 @@ class ApiComponent extends Injectable
             }
         }
     }
+    /**
+     * spotify player web API only limited features available
+     *
+     * @return void
+     */
     public function controllPlayer()
     {
         $url = "https://api.spotify.com/v1/me/player/currently-playing";

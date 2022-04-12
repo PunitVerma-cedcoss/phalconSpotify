@@ -135,6 +135,14 @@ $container->set(
     }
 );
 
+// setting Guzzle client
+$container->set(
+    "guzzle",
+    function () {
+        return "http://localhost:8080/auth/connectBack";
+    }
+);
+
 $container->set(
     'db',
     function () {

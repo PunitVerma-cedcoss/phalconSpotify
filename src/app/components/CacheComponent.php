@@ -30,15 +30,6 @@ class CacheComponent extends Injectable
         ];
 
         $adapter = new Stream($serializerFactory, $options);
-        // $options = [
-        //     'defaultSerializer' => 'Json',
-        //     'lifetime'          => 7200,
-        //     'host'              => '127.0.0.1',
-        //     'port'              => 6379,
-        //     'index'             => 1,
-        // ];
-
-        // $adapter = new Redis($serializerFactory, $options);
         $cache = new Cache($adapter);
         return $cache;
     }
